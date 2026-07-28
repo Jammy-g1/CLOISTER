@@ -1,4 +1,5 @@
 const app = new Application();
+app.roomEditor = new RoomEditor(app);
 
 const floorSelector = document.getElementById("floorSelector");
 const svgContainer = document.getElementById("svgContainer");
@@ -112,6 +113,7 @@ async function loadFloor(id) {
     const loadedSvg = svgContainer.querySelector("svg");
 
     app.svg = loadedSvg;
+    app.roomEditor.initialise(loadedSvg);
 
     loadedSvg.style.width = "100%";
     loadedSvg.style.height = "auto";
@@ -224,6 +226,22 @@ window.addEventListener("mouseup",()=>{
     }
 
 });
+
+document.getElementById("drawTool").onclick = () => {
+
+    app.currentTool = "polygon";
+
+    status.textContent = "Polygon Tool";
+
+};
+
+document.getElementById("pointerTool").onclick = () => {
+
+    app.currentTool = "pointer";
+
+    status.textContent = "Pointer Tool";
+
+};
 
 
 start();

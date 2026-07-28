@@ -22,6 +22,8 @@ class Application {
         this.startMouseY = 0;
 
         this.svg = null;
+
+        this.roomEditor = null;
     }
 
 }
