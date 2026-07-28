@@ -1,14 +1,21 @@
 class RoomEditor {
 
-    constructor(app) {
+constructor(app) {
 
-        this.app = app;
-        this.points = [];
-        this.tempLayer = null;
-        this.pointLayer = null;
-        this.lines = [];
+    this.app = app;
 
-    }
+    this.points = [];
+
+    this.tempLayer = null;
+    this.pointLayer = null;
+
+    this.lines = [];
+
+    this.previewLine = null;
+
+    this.isDrawing = false;
+
+}
 
     initialise(svg) {
 
@@ -19,6 +26,7 @@ class RoomEditor {
         this.tempLayer = this.createLayer("drawingLayer");
 
         svg.addEventListener("click", (e) => this.onClick(e));
+        svg.addEventListener("mousemove", (e) => this.onMouseMove(e));
 
     }
 
@@ -54,17 +62,57 @@ class RoomEditor {
 
             const previous = this.points[this.points.length - 1];
 
+            // Make the preview line permanent
             this.drawLine(previous, p);
+
+            // Reset the preview line
+            this.previewLine.remove();
+
+            this.previewLine = null;
 
         }
 
         this.points.push(p);
 
         this.drawPoint(p);
+        if (!this.previewLine) {
+
+        this.previewLine = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "line"
+        );
+
+        this.previewLine.setAttribute("stroke", "#C9A227");
+        this.previewLine.setAttribute("stroke-width", "2");
+        this.previewLine.setAttribute("stroke-dasharray", "5,5");
+
+        this.tempLayer.appendChild(this.previewLine);
+
+    }
 
         console.log(this.points);
 
     }
+
+onMouseMove(e) {
+
+    if (!this.previewLine)
+        return;
+
+    if (this.points.length === 0)
+        return;
+
+    const p = getSVGPoint(e);
+
+    const lastPoint = this.points[this.points.length - 1];
+
+    this.previewLine.setAttribute("x1", lastPoint.x);
+    this.previewLine.setAttribute("y1", lastPoint.y);
+
+    this.previewLine.setAttribute("x2", p.x);
+    this.previewLine.setAttribute("y2", p.y);
+
+}
 
     drawPoint(point) {
 
