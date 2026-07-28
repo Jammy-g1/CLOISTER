@@ -123,7 +123,7 @@ aside{
 
 #svgContainer{
 
-    background:white;
+    background:rgba(206, 206, 206, 0.144);
 
     box-shadow:var(--shadow);
 
