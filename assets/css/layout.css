@@ -94,15 +94,30 @@ aside{
 
 #viewport{
 
+    background:#0B1220;
+
+    overflow:hidden;
+
     display:flex;
 
     justify-content:center;
 
     align-items:center;
 
-    background:#0B1220;
+}
+
+#viewportWrapper{
+
+    width:100%;
+    height:100%;
 
     overflow:auto;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
 
 }
 
@@ -112,9 +127,7 @@ aside{
 
     box-shadow:var(--shadow);
 
-    min-width:600px;
-
-    min-height:600px;
+    transform-origin:center center;
 
 }
 
@@ -155,5 +168,15 @@ footer{
 .floorItem:hover{
 
     background:#2B3646;
+
+}
+
+#mapContainer{
+
+    transform-origin:center center;
+
+    transition:transform .05s linear;
+
+    cursor:default;
 
 }

@@ -1,9 +1,14 @@
+const app = new Application();
+
 const floorSelector = document.getElementById("floorSelector");
 const svgContainer = document.getElementById("svgContainer");
 const buildingTree = document.getElementById("buildingTree");
 const status = document.getElementById("status");
+const viewport = document.getElementById("viewportWrapper");
+const mapContainer = document.getElementById("mapContainer");
 
 const building = new Building("stbenedicts");
+
 
 async function start() {
 
@@ -15,7 +20,7 @@ async function start() {
 
     populateFloorSelector();
 
-    loadFloor(building.data.floors[0].id);
+    await loadFloor(building.data.floors[0].id);
 
     status.textContent = "Ready";
 
@@ -75,6 +80,21 @@ function populateFloorSelector() {
 
 }
 
+function getSVGPoint(event) {
+
+    const pt = app.svg.createSVGPoint();
+
+    pt.x = event.clientX;
+    pt.y = event.clientY;
+
+    const result = pt.matrixTransform(
+        app.svg.getScreenCTM().inverse()
+    );
+
+    return result;
+
+}
+
 async function loadFloor(id) {
 
     const floor = building.getFloor(id);
@@ -91,11 +111,119 @@ async function loadFloor(id) {
 
     const loadedSvg = svgContainer.querySelector("svg");
 
+    app.svg = loadedSvg;
+
     loadedSvg.style.width = "100%";
     loadedSvg.style.height = "auto";
+
+    loadedSvg.addEventListener("click", e => {
+
+        const p = getSVGPoint(e);
+
+        console.log(
+            Math.round(p.x),
+            Math.round(p.y)
+        );
+
+    });
 
     status.textContent = floor.name;
 
 }
+
+
+// 👇 ADD IT HERE
+function updateViewport() {
+
+    mapContainer.style.transform =
+        `translate(${app.panX}px, ${app.panY}px) scale(${app.zoom})`;
+
+}
+
+
+viewport.addEventListener("wheel", e=>{
+
+    e.preventDefault();
+
+    if(e.deltaY < 0){
+
+        app.zoom *= 1.1;
+
+    }else{
+
+        app.zoom /= 1.1;
+
+    }
+
+    app.zoom = Math.min(6, Math.max(.2, app.zoom));
+
+    updateViewport();
+
+});
+
+window.addEventListener("keydown",e=>{
+
+    if(e.code==="Space"){
+
+        app.spacePressed=true;
+
+        mapContainer.style.cursor="grab";
+
+        e.preventDefault();
+
+    }
+
+});
+
+window.addEventListener("keyup",e=>{
+
+    if(e.code==="Space"){
+
+        app.spacePressed=false;
+
+        app.isPanning=false;
+
+        mapContainer.style.cursor="default";
+
+    }
+
+});
+
+viewport.addEventListener("mousedown",e=>{
+
+    if(!app.spacePressed) return;
+
+    app.isPanning=true;
+
+    app.startMouseX=e.clientX-app.panX;
+    app.startMouseY=e.clientY-app.panY;
+
+    mapContainer.style.cursor="grabbing";
+
+});
+
+window.addEventListener("mousemove",e=>{
+
+    if(!app.isPanning) return;
+
+    app.panX=e.clientX-app.startMouseX;
+    app.panY=e.clientY-app.startMouseY;
+
+    updateViewport();
+
+});
+
+window.addEventListener("mouseup",()=>{
+
+    app.isPanning=false;
+
+    if(app.spacePressed){
+
+        mapContainer.style.cursor="grab";
+
+    }
+
+});
+
 
 start();
