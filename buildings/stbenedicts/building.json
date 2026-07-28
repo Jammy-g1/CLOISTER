@@ -1,0 +1,21 @@
+{
+    "id": "stbenedicts",
+
+    "name": "St Benedict's Catholic School",
+
+    "floors": [
+
+        {
+            "id": "ground",
+            "name": "Ground Floor",
+            "svg": "ground.svg"
+        },
+
+        {
+            "id": "first",
+            "name": "First Floor",
+            "svg": "first.svg"
+        }
+
+    ]
+}

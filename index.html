@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>CLOISTER</title>
+
+    <link rel="stylesheet" href="assets/css/theme.css">
+    <link rel="stylesheet" href="assets/css/layout.css">
+
+</head>
+
+<body>
+
+<div id="app">
+
+    <!-- TOP BAR -->
+
+    <header>
+
+        <div id="logo">
+
+            CLOISTER
+
+        </div>
+
+        <div id="toolbar">
+
+            <button id="pointerTool">Pointer</button>
+
+            <button id="drawTool">Draw</button>
+
+            <button id="panTool">Pan</button>
+
+            <button id="deleteTool">Delete</button>
+
+            <button id="saveButton">Save</button>
+
+        </div>
+
+        <div id="headerRight">
+
+            <select id="floorSelector"></select>
+
+            <input
+                id="search"
+                placeholder="Search...">
+
+        </div>
+
+    </header>
+
+    <!-- MAIN -->
+
+    <main>
+
+        <!-- Explorer -->
+
+        <aside id="explorer">
+
+            <h3>Explorer</h3>
+
+            <div id="buildingTree">
+
+            Loading...
+
+            </div>
+
+        </aside>
+
+        <!-- Viewport -->
+
+        <section id="viewport">
+
+            <div id="svgContainer">
+
+            Loading map...
+
+            </div>
+
+        </section>
+
+        <!-- Properties -->
+
+        <aside id="properties">
+
+            <h3>Properties</h3>
+
+            <div id="propertyContent">
+
+                No room selected.
+
+            </div>
+
+        </aside>
+
+    </main>
+
+    <!-- STATUS BAR -->
+
+    <footer>
+
+        <span id="status">
+
+            Ready
+
+        </span>
+
+        <span id="version">
+
+            CLOISTER v0.1.0
+
+        </span>
+
+    </footer>
+
+</div>
+
+<script src="assets/js/building.js"></script>
+<script src="assets/js/app.js"></script>
+
+</body>
+</html>
