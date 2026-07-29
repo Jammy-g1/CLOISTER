@@ -2,11 +2,16 @@
 
 Campus Location & Operations Information System
 
+An interactive campus mapping and room information system for St Benedict's Catholic School.
+
 ## Current Features
 
-- Interactive SVG floor plans
-- Zoom and pan
-- Polygon room editor (in development)
-- Multi-floor support
+- Multi-floor SVG maps
+- Polygon room editor
+- Room selection
+- Room properties
+- Search (planned)
+- Room image galleries (planned)
+- Tag-based organisation (planned)
 
-Status: Under Development
+Status: Active Development
