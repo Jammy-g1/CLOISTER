@@ -3,21 +3,17 @@ class RoomEditor {
 constructor(app) {
 
     this.app = app;
-
     this.points = [];
-
     this.tempLayer = null;
     this.pointLayer = null;
-
     this.lines = [];
-
+    this.pointsSvg = [];
     this.previewLine = null;
-
     this.isDrawing = false;
 
 }
 
-    initialise(svg) {
+initialise(svg) {
 
         this.svg = svg;
 
@@ -27,10 +23,10 @@ constructor(app) {
 
         svg.addEventListener("click", (e) => this.onClick(e));
         svg.addEventListener("mousemove", (e) => this.onMouseMove(e));
+        svg.addEventListener("dblclick", (e) => this.onDoubleClick(e));
+}
 
-    }
-
-    createLayer(id) {
+createLayer(id) {
 
         let layer = this.svg.querySelector("#" + id);
 
@@ -49,9 +45,9 @@ constructor(app) {
 
         return layer;
 
-    }
+}
 
-    onClick(e) {
+onClick(e) {
 
         if (this.app.currentTool !== "polygon")
             return;
@@ -98,7 +94,7 @@ constructor(app) {
 
         console.log(this.points);
 
-    }
+}
 
 onMouseMove(e) {
 
@@ -120,7 +116,7 @@ onMouseMove(e) {
 
 }
 
-    drawPoint(point) {
+drawPoint(point) {
 
         const circle = document.createElementNS(
             "http://www.w3.org/2000/svg",
@@ -135,10 +131,11 @@ onMouseMove(e) {
         circle.setAttribute("fill", "#C9A227");
 
         this.pointLayer.appendChild(circle);
+        this.pointsSvg.push(circle);
 
-    }
+}
     
-    drawLine(start, end) {
+drawLine(start, end) {
 
     const line = document.createElementNS(
         "http://www.w3.org/2000/svg",
@@ -158,6 +155,59 @@ onMouseMove(e) {
 
     this.lines.push(line);
 
+}
+
+clearDrawing() {
+
+    // Remove vertex circles
+    this.pointsSvg.forEach(circle => circle.remove());
+
+    // Remove permanent lines
+    this.lines.forEach(line => line.remove());
+
+    // Remove preview line
+    if (this.previewLine) {
+
+        this.previewLine.remove();
+
     }
+
+    // Reset arrays
+    this.points = [];
+    this.pointsSvg = [];
+    this.lines = [];
+
+    this.previewLine = null;
+
+    this.isDrawing = false;
+
+}
+
+onDoubleClick(e) {
+
+    if (this.points.length < 3)
+        return;
+
+    const polygon = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "polygon"
+    );
+
+    const points = this.points
+        .map(p => `${p.x},${p.y}`)
+        .join(" ");
+
+    polygon.setAttribute("points", points);
+
+    polygon.setAttribute("fill", "#C9A227");
+    polygon.setAttribute("fill-opacity", "0.25");
+
+    polygon.setAttribute("stroke", "#C9A227");
+    polygon.setAttribute("stroke-width", "2");
+
+    this.svg.appendChild(polygon);
+    this.clearDrawing();
+
+}
 
 }
