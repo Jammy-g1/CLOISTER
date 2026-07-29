@@ -255,12 +255,80 @@ roomNotesInput.addEventListener("input", () => {
 
 });
 
-document.getElementById("saveButton").onclick = () => {
+document.getElementById("saveButton").onclick = async () => {
 
-    const rooms = app.rooms.map(room => room.toObject());
+    const data = {
 
-    console.log(JSON.stringify(rooms, null, 4));
+        version: 1,
+        building: building.folder,
+        exported: new Date().toISOString(),
+        rooms: app.rooms.map(room => room.toObject())
 
+    };
+
+    const json = JSON.stringify(data, null, 4);
+
+    if (window.showSaveFilePicker) {
+
+        try {
+
+            const handle = await window.showSaveFilePicker({
+
+                suggestedName: `${building.folder}_rooms.json`,
+
+                types: [
+                    {
+                        description: "JSON Files",
+                        accept: {
+                            "application/json": [".json"]
+                        }
+                    }
+                ]
+
+            });
+
+            const writable = await handle.createWritable();
+
+            await writable.write(json);
+
+            await writable.close();
+
+            status.textContent = "Rooms saved.";
+
+        }
+        catch {
+
+            status.textContent = "Save cancelled.";
+
+        }
+
+    }
+    else {
+
+        const blob = new Blob(
+            [json],
+            { type: "application/json" }
+        );
+
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+
+        link.href = url;
+
+        link.download = `${building.folder}_rooms.json`;
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        link.remove();
+
+        URL.revokeObjectURL(url);
+
+        status.textContent = "Rooms downloaded.";
+
+    }
 };
 
 start();
