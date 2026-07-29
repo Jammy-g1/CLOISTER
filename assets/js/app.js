@@ -124,7 +124,6 @@ async function loadFloor(id) {
 
 }
 
-
 function updateViewport() {
 
     mapContainer.style.transform =
@@ -255,5 +254,13 @@ roomNotesInput.addEventListener("input", () => {
     app.selectedRoom.notes = roomNotesInput.value;
 
 });
+
+document.getElementById("saveButton").onclick = () => {
+
+    const rooms = app.rooms.map(room => room.toObject());
+
+    console.log(JSON.stringify(rooms, null, 4));
+
+};
 
 start();

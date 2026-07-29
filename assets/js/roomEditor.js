@@ -205,29 +205,15 @@ onDoubleClick(e) {
     polygon.setAttribute("stroke", "#c9a32700");
     polygon.setAttribute("stroke-width", "0.5");
 
-    const room = {
+    const room = new Room(polygon);
 
-        id: "",
+        this.app.rooms.push(room);
 
-        name: "",
+            polygon.addEventListener("click", () => {
 
-        polygon: polygon,
+                this.selectRoom(room);
 
-        notes: "",
-
-        tags: [],
-
-        images: []
-
-    };
-
-    this.app.rooms.push(room);
-
-        polygon.addEventListener("click", () => {
-
-            this.selectRoom(room);
-
-        });
+            });
 
     this.svg.appendChild(polygon);
 
