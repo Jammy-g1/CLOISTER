@@ -1,6 +1,6 @@
 # CLOISTER
 
-Interactive campus mapping system.
+Campus Location & Operations Information System
 
 ## Current Features
 
