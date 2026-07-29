@@ -82,6 +82,12 @@ constructor(app) {
             "line"
         );
 
+        this.previewLine.setAttribute("x1", p.x);
+        this.previewLine.setAttribute("y1", p.y);
+
+        this.previewLine.setAttribute("x2", p.x);
+        this.previewLine.setAttribute("y2", p.y);
+
         this.previewLine.setAttribute("stroke", "#C9A227");
         this.previewLine.setAttribute("stroke-width", "2");
         this.previewLine.setAttribute("stroke-dasharray", "5,5");
