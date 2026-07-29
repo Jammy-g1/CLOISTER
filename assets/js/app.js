@@ -134,14 +134,12 @@ async function loadFloor(id) {
 }
 
 
-// 👇 ADD IT HERE
 function updateViewport() {
 
     mapContainer.style.transform =
         `translate(${app.panX}px, ${app.panY}px) scale(${app.zoom})`;
 
 }
-
 
 viewport.addEventListener("wheel", e=>{
 
@@ -157,7 +155,7 @@ viewport.addEventListener("wheel", e=>{
 
     }
 
-    app.zoom = Math.min(6, Math.max(.2, app.zoom));
+    app.zoom = Math.min(50, Math.max(1, app.zoom));
 
     updateViewport();
 

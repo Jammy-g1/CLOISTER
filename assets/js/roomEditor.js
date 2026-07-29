@@ -85,8 +85,8 @@ onClick(e) {
         this.previewLine.setAttribute("y2", p.y);
 
         this.previewLine.setAttribute("stroke", "#C9A227");
-        this.previewLine.setAttribute("stroke-width", "2");
-        this.previewLine.setAttribute("stroke-dasharray", "5,5");
+        this.previewLine.setAttribute("stroke-width", "0.5");
+        this.previewLine.setAttribute("stroke-dasharray", "1,1");
 
         this.tempLayer.appendChild(this.previewLine);
 
@@ -126,7 +126,7 @@ drawPoint(point) {
         circle.setAttribute("cx", point.x);
         circle.setAttribute("cy", point.y);
 
-        circle.setAttribute("r", 5);
+        circle.setAttribute("r", 0.5);
 
         circle.setAttribute("fill", "#C9A227");
 
@@ -149,7 +149,7 @@ drawLine(start, end) {
     line.setAttribute("y2", end.y);
 
     line.setAttribute("stroke", "#C9A227");
-    line.setAttribute("stroke-width", "2");
+    line.setAttribute("stroke-width", "0.5");
 
     this.tempLayer.appendChild(line);
 
@@ -203,10 +203,43 @@ onDoubleClick(e) {
     polygon.setAttribute("fill-opacity", "0.25");
 
     polygon.setAttribute("stroke", "#C9A227");
-    polygon.setAttribute("stroke-width", "2");
+    polygon.setAttribute("stroke-width", "0.5");
+
+    const room = {
+
+        id: "",
+
+        name: "",
+
+        polygon: polygon,
+
+        notes: "",
+
+        tags: [],
+
+        images: []
+
+    };
+
+    this.app.rooms.push(room);
+
+        polygon.addEventListener("click", () => {
+
+            this.selectRoom(room);
+
+        });
 
     this.svg.appendChild(polygon);
+
     this.clearDrawing();
+
+}
+
+selectRoom(room) {
+
+    this.app.selectedRoom = room;
+
+    console.log("Selected room:", room);
 
 }
 
