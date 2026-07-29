@@ -2,7 +2,7 @@
 
 Campus Location & Operations Information System
 
-An interactive campus mapping and room information system for St Benedict's Catholic School.
+An interactive campus mapping and room information system.
 
 ## Current Features
 
