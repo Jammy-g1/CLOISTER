@@ -12,6 +12,7 @@
 
     <link rel="stylesheet" href="assets/css/theme.css">
     <link rel="stylesheet" href="assets/css/layout.css">
+    <link rel="stylesheet" href="assets/css/components.css">
 
 </head>
 
@@ -99,11 +100,34 @@
 
             <h3>Properties</h3>
 
-            <div id="propertyContent">
+        <div id="propertyContent">
 
-                No room selected.
-
+            <div class="property-group">
+                <label for="roomId">Room ID</label>
+                <input id="roomId" type="text" disabled>
             </div>
+
+            <div class="property-group">
+                <label for="roomName">Friendly Name</label>
+                <input id="roomName" type="text" disabled>
+            </div>
+
+            <div class="property-group">
+                <label>Tags</label>
+                <div id="roomTags" class="property-box">None</div>
+            </div>
+
+            <div class="property-group">
+                <label for="roomNotes">Notes</label>
+                <textarea id="roomNotes" rows="8" disabled></textarea>
+            </div>
+
+            <div class="property-group">
+                <label>Images</label>
+                <div id="roomImages" class="property-box">No images</div>
+            </div>
+
+        </div>
 
         </aside>
 
@@ -121,7 +145,7 @@
 
         <span id="version">
 
-            CLOISTER v0.1.0
+            CLOISTER v0.4.0
 
         </span>
 

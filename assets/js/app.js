@@ -7,7 +7,9 @@ const buildingTree = document.getElementById("buildingTree");
 const status = document.getElementById("status");
 const viewport = document.getElementById("viewportWrapper");
 const mapContainer = document.getElementById("mapContainer");
-
+const roomIdInput = document.getElementById("roomId");
+const roomNameInput = document.getElementById("roomName");
+const roomNotesInput = document.getElementById("roomNotes");
 const building = new Building("stbenedicts");
 
 
@@ -117,17 +119,6 @@ async function loadFloor(id) {
 
     loadedSvg.style.width = "100%";
     loadedSvg.style.height = "auto";
-
-    loadedSvg.addEventListener("click", e => {
-
-        const p = getSVGPoint(e);
-
-        console.log(
-            Math.round(p.x),
-            Math.round(p.y)
-        );
-
-    });
 
     status.textContent = floor.name;
 
@@ -241,5 +232,28 @@ document.getElementById("pointerTool").onclick = () => {
 
 };
 
+roomIdInput.addEventListener("input", () => {
+
+    if (!app.selectedRoom) return;
+
+    app.selectedRoom.id = roomIdInput.value;
+
+});
+
+roomNameInput.addEventListener("input", () => {
+
+    if (!app.selectedRoom) return;
+
+    app.selectedRoom.name = roomNameInput.value;
+
+});
+
+roomNotesInput.addEventListener("input", () => {
+
+    if (!app.selectedRoom) return;
+
+    app.selectedRoom.notes = roomNotesInput.value;
+
+});
 
 start();

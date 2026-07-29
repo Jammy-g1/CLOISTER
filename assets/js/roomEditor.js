@@ -202,7 +202,7 @@ onDoubleClick(e) {
     polygon.setAttribute("fill", "#C9A227");
     polygon.setAttribute("fill-opacity", "0.25");
 
-    polygon.setAttribute("stroke", "#C9A227");
+    polygon.setAttribute("stroke", "#c9a32700");
     polygon.setAttribute("stroke-width", "0.5");
 
     const room = {
@@ -237,7 +237,36 @@ onDoubleClick(e) {
 
 selectRoom(room) {
 
+    // Restore the previously selected room
+    if (this.app.selectedRoom) {
+
+        this.app.selectedRoom.polygon.setAttribute("stroke", "#c9a32700");
+        this.app.selectedRoom.polygon.setAttribute("stroke-width", "0.5");
+
+    }
+
+    // Store the new selection
     this.app.selectedRoom = room;
+
+    document.getElementById("roomId").value = room.id;
+
+    document.getElementById("roomName").value = room.name;
+
+    document.getElementById("roomNotes").value = room.notes;
+
+    document.getElementById("roomTags").textContent =
+        room.tags.length ? room.tags.join(", ") : "None";
+
+    document.getElementById("roomImages").textContent =
+        room.images.length + " image(s)";
+
+    document.getElementById("roomId").disabled = false;
+    document.getElementById("roomName").disabled = false;
+    document.getElementById("roomNotes").disabled = false;
+
+    // Highlight the new room
+    room.polygon.setAttribute("stroke", "#C9A227");
+    room.polygon.setAttribute("stroke-width", "0.6");
 
     console.log("Selected room:", room);
 
