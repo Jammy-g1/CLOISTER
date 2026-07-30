@@ -207,17 +207,25 @@ onDoubleClick(e) {
 
     const room = new Room(polygon);
 
-                this.app.rooms.push(room);
-
-            polygon.addEventListener("click", () => {
-
-                this.selectRoom(room);
-
-            });
+    this.createRoom(room);
     
     this.svg.appendChild(polygon);
 
     this.clearDrawing();
+
+}
+
+createRoom(room) {
+
+    this.svg.appendChild(room.polygon);
+
+    room.polygon.addEventListener("click", () => {
+
+        this.selectRoom(room);
+
+    });
+
+    this.app.rooms.push(room);
 
 }
 

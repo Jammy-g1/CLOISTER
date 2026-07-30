@@ -11,7 +11,7 @@ const roomIdInput = document.getElementById("roomId");
 const roomNameInput = document.getElementById("roomName");
 const roomNotesInput = document.getElementById("roomNotes");
 const building = new Building("stbenedicts");
-
+const importFile = document.getElementById("importFile");
 
 async function start() {
 
@@ -330,5 +330,29 @@ document.getElementById("saveButton").onclick = async () => {
 
     }
 };
+
+document.getElementById("importButton").onclick = () => {
+
+    importFile.click();
+};
+
+importFile.addEventListener("change", async () => {
+
+    if (importFile.files.length === 0)
+        return;
+
+    const file = importFile.files[0];
+
+    const text = await file.text();
+
+    const data = JSON.parse(text);
+    app.rooms = [];
+    for (const roomData of data.rooms) {
+    console.log(roomData.id);
+    }
+
+    console.log(data);
+
+});
 
 start();
