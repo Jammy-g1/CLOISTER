@@ -208,8 +208,6 @@ onDoubleClick(e) {
     const room = new Room(polygon);
 
     this.createRoom(room);
-    
-    this.svg.appendChild(polygon);
 
     this.clearDrawing();
 
@@ -263,6 +261,22 @@ selectRoom(room) {
     room.polygon.setAttribute("stroke-width", "0.6");
 
     console.log("Selected room:", room);
+
+}
+
+clearRooms() {
+
+    console.log("Clearing", this.app.rooms.length, "rooms");
+
+    this.app.rooms.forEach(room => {
+
+        room.polygon.remove();
+
+    });
+
+    this.app.rooms = [];
+
+    this.app.selectedRoom = null;
 
 }
 

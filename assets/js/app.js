@@ -347,8 +347,42 @@ importFile.addEventListener("change", async () => {
 
     const data = JSON.parse(text);
     app.rooms = [];
+
+    app.roomEditor.clearRooms();
+
+    console.log(app.rooms.length);
+
     for (const roomData of data.rooms) {
-    console.log(roomData.id);
+
+        const polygon = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "polygon"
+        );
+
+        const points = roomData.polygon
+            .map(p => `${p[0]},${p[1]}`)
+            .join(" ");
+
+        polygon.setAttribute("points", points);
+
+        polygon.setAttribute("fill", "#C9A227");
+        polygon.setAttribute("fill-opacity", "0.25");
+
+        polygon.setAttribute("stroke", "#c9a32700");
+        polygon.setAttribute("stroke-width", "0.5");
+
+        const room = new Room(polygon);
+
+        room.id = roomData.id;
+        room.name = roomData.name;
+        room.notes = roomData.notes;
+        room.tags = roomData.tags;
+        room.images = roomData.images;
+
+        app.roomEditor.createRoom(room);
+
+        console.log("Rooms:", app.rooms.length);
+
     }
 
     console.log(data);
