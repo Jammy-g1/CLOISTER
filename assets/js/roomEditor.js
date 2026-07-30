@@ -219,6 +219,14 @@ createRoom(room) {
 
     room.polygon.addEventListener("click", () => {
 
+        if (this.app.currentTool === "delete") {
+
+            this.deleteRoom(room);
+
+            return;
+
+        }
+
         this.selectRoom(room);
 
     });
@@ -277,6 +285,28 @@ clearRooms() {
     this.app.rooms = [];
 
     this.app.selectedRoom = null;
+
+}
+
+deleteRoom(room) {
+
+    room.polygon.remove();
+
+    this.app.rooms = this.app.rooms.filter(r => r !== room);
+
+    if (this.app.selectedRoom === room) {
+
+        this.app.selectedRoom = null;
+
+    }
+
+    document.getElementById("roomId").value = "";
+    document.getElementById("roomName").value = "";
+    document.getElementById("roomNotes").value = "";
+
+    document.getElementById("roomId").disabled = true;
+    document.getElementById("roomName").disabled = true;
+    document.getElementById("roomNotes").disabled = true;
 
 }
 

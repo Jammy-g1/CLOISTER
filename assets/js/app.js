@@ -346,7 +346,6 @@ importFile.addEventListener("change", async () => {
     const text = await file.text();
 
     const data = JSON.parse(text);
-    app.rooms = [];
 
     app.roomEditor.clearRooms();
 
@@ -388,5 +387,13 @@ importFile.addEventListener("change", async () => {
     console.log(data);
 
 });
+
+document.getElementById("deleteTool").onclick = () => {
+
+    app.currentTool = "delete";
+
+    status.textContent = "Delete Tool";
+
+};
 
 start();
