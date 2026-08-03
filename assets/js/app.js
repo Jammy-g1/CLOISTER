@@ -13,6 +13,8 @@ const roomNotesInput = document.getElementById("roomNotes");
 const building = new Building("stbenedicts");
 const importFile = document.getElementById("importFile");
 const search = document.getElementById("search");
+const roomImageInput = document.getElementById("roomImage");
+const roomImagePreview = document.getElementById("roomImagePreview");
 
 async function start() {
 
@@ -385,7 +387,7 @@ importFile.addEventListener("change", async () => {
         room.name = roomData.name;
         room.notes = roomData.notes;
         room.tags = roomData.tags;
-        room.images = roomData.images;
+        room.image = roomData.image || "";
 
         app.roomEditor.createRoom(room);
 
@@ -419,5 +421,28 @@ search.addEventListener("input", () => {
     app.roomEditor.selectRoom(room);
 
 });
+
+roomImageInput.addEventListener("change", () => {
+
+    if (!app.selectedRoom) return;
+    if (roomImageInput.files.length === 0) return;
+
+    const file = roomImageInput.files[0];
+
+    app.selectedRoom.image = file.name;
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+
+        roomImagePreview.src = reader.result;
+        roomImagePreview.style.display = "block";
+
+    };
+
+    reader.readAsDataURL(file);
+
+});
+
 
 start();

@@ -298,15 +298,19 @@ selectRoom(room) {
     document.getElementById("roomTags").textContent =
         room.tags.length ? room.tags.join(", ") : "None";
 
-    document.getElementById("roomImages").textContent =
-        room.images.length + " image(s)";
+//    document.getElementById("roomImages").textContent =
+//        room.images.length + " image(s)";
 
     document.getElementById("roomId").disabled = false;
     document.getElementById("roomName").disabled = false;
     document.getElementById("roomNotes").disabled = false;
 
     // Highlight the new room
+    console.log("Selecting:", room.id);
+    console.log(room.polygon);
+    console.log("Highlighting", room.id);
     room.polygon.setAttribute("stroke", "#C9A227");
+    console.log(room.polygon.getAttribute("stroke"));
     room.polygon.setAttribute("stroke-width", "0.6");
 
     console.log("Selected room:", room);

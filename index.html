@@ -124,10 +124,25 @@
                 <textarea id="roomNotes" rows="8" disabled></textarea>
             </div>
 
-            <div class="property-group">
-                <label>Images</label>
-                <div id="roomImages" class="property-box">No images</div>
-            </div>
+            <div class="property-Group">
+
+            <label>Image</label>
+
+            <input
+                type="file"
+                id="roomImage"
+                accept="image/*">
+
+            <img
+                id="roomImagePreview"
+                style="
+                    display:none;
+                    max-width:100%;
+                    margin-top:10px;
+                    border:1px solid #999;
+                ">
+
+        </div>
 
         </div>
 
@@ -160,6 +175,10 @@
     id="importFile"
     accept=".json"
     style="display:none;">
+
+<img
+    id="roomImagePreview"
+    style="max-width:100%; margin-top:10px; display:none;">
 
 <script src="assets/js/application.js"></script>
 <script src="assets/js/building.js"></script>
