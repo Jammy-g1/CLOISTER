@@ -216,6 +216,31 @@ onDoubleClick(e) {
 createRoom(room) {
 
     this.svg.appendChild(room.polygon);
+    const label = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "text"
+    );
+
+    label.setAttribute("text-anchor", "middle");
+    label.setAttribute("dominant-baseline", "middle");
+
+    label.setAttribute("font-size", "1.5");
+    label.setAttribute("font-family", "Segoe UI");
+    label.setAttribute("fill", "#000000");
+    label.setAttribute("stroke", "none");
+    label.setAttribute("font-weight", "bold");
+    label.setAttribute("pointer-events", "none");
+
+    const box = room.polygon.getBBox();
+
+    label.setAttribute("x", box.x + box.width / 2);
+    label.setAttribute("y", box.y + box.height / 2);
+
+    label.textContent = room.id;
+
+    room.label = label;
+
+    this.svg.appendChild(label);
 
     room.polygon.addEventListener("click", () => {
 
@@ -280,6 +305,12 @@ clearRooms() {
 
         room.polygon.remove();
 
+        if (room.label) {
+
+            room.label.remove();
+
+        }
+
     });
 
     this.app.rooms = [];
@@ -291,6 +322,11 @@ clearRooms() {
 deleteRoom(room) {
 
     room.polygon.remove();
+    if (room.label) {
+
+        room.label.remove();
+
+    }
 
     this.app.rooms = this.app.rooms.filter(r => r !== room);
 

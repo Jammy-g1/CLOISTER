@@ -237,6 +237,12 @@ roomIdInput.addEventListener("input", () => {
 
     app.selectedRoom.id = roomIdInput.value;
 
+    if (app.selectedRoom.label) {
+
+        app.selectedRoom.label.textContent = roomIdInput.value;
+
+    }
+
 });
 
 roomNameInput.addEventListener("input", () => {
