@@ -10,6 +10,9 @@ constructor(app) {
     this.pointsSvg = [];
     this.previewLine = null;
     this.isDrawing = false;
+    this.vertexHandles = [];
+    this.dragHandle = null;
+    this.dragRoom = null;
 
 }
 
@@ -24,6 +27,8 @@ initialise(svg) {
         svg.addEventListener("click", (e) => this.onClick(e));
         svg.addEventListener("mousemove", (e) => this.onMouseMove(e));
         svg.addEventListener("dblclick", (e) => this.onDoubleClick(e));
+        window.addEventListener("mousemove", (e) => this.onVertexDrag(e));
+        window.addEventListener("mouseup", () => this.stopVertexDrag());
 }
 
 createLayer(id) {
@@ -129,6 +134,7 @@ drawPoint(point) {
         circle.setAttribute("r", 0.5);
 
         circle.setAttribute("fill", "#C9A227");
+        
 
         this.pointLayer.appendChild(circle);
         this.pointsSvg.push(circle);
@@ -184,6 +190,16 @@ clearDrawing() {
 }
 
 onDoubleClick(e) {
+
+    const last = this.points[this.points.length - 1];
+    const previous = this.points[this.points.length - 2];
+
+    if (
+        last.x === previous.x &&
+        last.y === previous.y
+    ) {
+        this.points.pop();
+    }
 
     if (this.points.length < 3)
         return;
@@ -294,6 +310,45 @@ selectRoom(room) {
     room.polygon.setAttribute("stroke-width", "0.6");
 
     console.log("Selected room:", room);
+    this.showVertices(room);
+
+}
+
+showVertices(room) {
+
+    this.vertexHandles.forEach(h => h.remove());
+
+    this.vertexHandles = [];
+
+    const points = room.polygon.points;
+
+    for (let i = 0; i < points.length; i++) {
+
+        const handle = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "circle"
+        );
+
+        handle.setAttribute("cx", points[i].x);
+        handle.setAttribute("cy", points[i].y);
+
+        handle.setAttribute("r", "0.5");
+
+        handle.setAttribute("fill", "#4FC3F7");
+        handle.setAttribute("stroke", "none");
+
+        this.svg.appendChild(handle);
+
+        this.vertexHandles.push(handle);
+      
+        handle.addEventListener("mousedown", () => {
+
+            this.dragHandle = i;
+            this.dragRoom = room;
+
+        });
+
+    }
 
 }
 
@@ -345,6 +400,46 @@ deleteRoom(room) {
     document.getElementById("roomNotes").disabled = true;
 
 }
+
+onVertexDrag(e) {
+
+    if (this.dragHandle === null)
+        return;
+
+    const p = getSVGPoint(e);
+
+    const points = this.dragRoom.polygon.points;
+
+    points[this.dragHandle].x = p.x;
+    points[this.dragHandle].y = p.y;
+
+    this.vertexHandles[this.dragHandle].setAttribute("cx", p.x);
+    this.vertexHandles[this.dragHandle].setAttribute("cy", p.y);
+    this.updateLabel(this.dragRoom);
+
+}
+
+stopVertexDrag() {
+
+    this.dragHandle = null;
+    this.dragRoom = null;
+
+}
+
+updateLabel(room) {
+
+    if (!room.label)
+        return;
+
+    const box = room.polygon.getBBox();
+
+    room.label.setAttribute("x", box.x + box.width / 2);
+    room.label.setAttribute("y", box.y + box.height / 2);
+
+}
+
+
+
 
 // TODO:
 // Re-implement after viewport refactor.
