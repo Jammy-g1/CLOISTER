@@ -12,6 +12,7 @@ const roomNameInput = document.getElementById("roomName");
 const roomNotesInput = document.getElementById("roomNotes");
 const building = new Building("stbenedicts");
 const importFile = document.getElementById("importFile");
+const search = document.getElementById("search");
 
 async function start() {
 
@@ -401,5 +402,20 @@ document.getElementById("deleteTool").onclick = () => {
     status.textContent = "Delete Tool";
 
 };
+
+search.addEventListener("input", () => {
+
+    const value = search.value.trim().toLowerCase();
+
+    const room = app.rooms.find(r =>
+        r.id.toLowerCase() === value
+    );
+
+    if (!room)
+        return;
+
+    app.roomEditor.selectRoom(room);
+
+});
 
 start();
