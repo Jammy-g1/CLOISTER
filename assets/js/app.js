@@ -127,6 +127,8 @@ async function loadFloor(id) {
 
 function updateViewport() {
 
+    mapContainer.style.transformOrigin = "0 0";
+
     mapContainer.style.transform =
         `translate(${app.panX}px, ${app.panY}px) scale(${app.zoom})`;
 
