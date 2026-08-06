@@ -11,7 +11,6 @@ const roomIdInput = document.getElementById("roomId");
 const roomNameInput = document.getElementById("roomName");
 const roomNotesInput = document.getElementById("roomNotes");
 const building = new Building("stbenedicts");
-const importFile = document.getElementById("importFile");
 const search = document.getElementById("search");
 const roomImageInput = document.getElementById("roomImage");
 const roomImagePreview = document.getElementById("roomImagePreview");
@@ -341,58 +340,6 @@ document.getElementById("exportButton").onclick = () => {
 
 };
 
-importFile.addEventListener("change", async () => {
-
-    if (importFile.files.length === 0)
-        return;
-
-    const file = importFile.files[0];
-
-    const text = await file.text();
-
-    const data = JSON.parse(text);
-
-    app.roomEditor.clearRooms();
-
-    console.log(app.rooms.length);
-
-    for (const roomData of data.rooms) {
-
-        const polygon = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "polygon"
-        );
-
-        const points = roomData.polygon
-            .map(p => `${p[0]},${p[1]}`)
-            .join(" ");
-
-        polygon.setAttribute("points", points);
-
-        polygon.setAttribute("fill", "#C9A227");
-        polygon.setAttribute("fill-opacity", "0.25");
-
-        polygon.setAttribute("stroke", "#c9a32700");
-        polygon.setAttribute("stroke-width", "0.5");
-
-        const room = new Room(polygon);
-
-        room.id = roomData.id;
-        room.name = roomData.name;
-        room.notes = roomData.notes;
-        room.tags = roomData.tags;
-        room.image = roomData.image || "";
-
-        app.roomEditor.createRoom(room);
-
-        console.log("Rooms:", app.rooms.length);
-
-    }
-
-    console.log(data);
-
-});
-
 document.getElementById("deleteTool").onclick = () => {
 
     app.currentTool = "delete";
@@ -416,25 +363,30 @@ search.addEventListener("input", () => {
 
 });
 
-roomImageInput.addEventListener("change", () => {
+roomImageInput.addEventListener("change", async () => {
 
-    if (!app.selectedRoom) return;
-    if (roomImageInput.files.length === 0) return;
+    if (!app.selectedRoom)
+        return;
+
+    if (roomImageInput.files.length === 0)
+        return;
 
     const file = roomImageInput.files[0];
 
-    app.selectedRoom.image = file.name;
+    const formData = new FormData();
+    formData.append("image", file);
 
-    const reader = new FileReader();
+    const response = await fetch("uploadImage.php", {
+        method: "POST",
+        body: formData
+    });
 
-    reader.onload = () => {
+    const result = await response.json();
 
-        roomImagePreview.src = reader.result;
-        roomImagePreview.style.display = "block";
+    app.selectedRoom.image = result.filename;
 
-    };
-
-    reader.readAsDataURL(file);
+    roomImagePreview.src = "images/" + result.filename;
+    roomImagePreview.style.display = "block";
 
 });
 
