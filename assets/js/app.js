@@ -268,6 +268,8 @@ roomNotesInput.addEventListener("input", () => {
 
 document.getElementById("saveButton").onclick = async () => {
 
+    alert("NEW SAVE");
+
     const data = {
 
         version: 1,
@@ -279,67 +281,28 @@ document.getElementById("saveButton").onclick = async () => {
 
     const json = JSON.stringify(data, null, 4);
 
-    if (window.showSaveFilePicker) {
+    const formData = new FormData();
 
-        try {
+    formData.append("rooms", json);
 
-            const handle = await window.showSaveFilePicker({
+    const response = await fetch("saveRooms.php", {
 
-                suggestedName: `${building.folder}_rooms.json`,
+        method: "POST",
+        body: formData
 
-                types: [
-                    {
-                        description: "JSON Files",
-                        accept: {
-                            "application/json": [".json"]
-                        }
-                    }
-                ]
+    });
 
-            });
+    if (response.ok) {
 
-            const writable = await handle.createWritable();
-
-            await writable.write(json);
-
-            await writable.close();
-
-            status.textContent = "Rooms saved.";
-
-        }
-        catch {
-
-            status.textContent = "Save cancelled.";
-
-        }
+        status.textContent = "Rooms saved.";
 
     }
     else {
 
-        const blob = new Blob(
-            [json],
-            { type: "application/json" }
-        );
-
-        const url = URL.createObjectURL(blob);
-
-        const link = document.createElement("a");
-
-        link.href = url;
-
-        link.download = `${building.folder}_rooms.json`;
-
-        document.body.appendChild(link);
-
-        link.click();
-
-        link.remove();
-
-        URL.revokeObjectURL(url);
-
-        status.textContent = "Rooms downloaded.";
+        status.textContent = "Save failed.";
 
     }
+
 };
 
 document.getElementById("importButton").onclick = () => {
