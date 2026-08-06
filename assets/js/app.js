@@ -119,6 +119,7 @@ async function loadFloor(id) {
 
     app.svg = loadedSvg;
     app.roomEditor.initialise(loadedSvg);
+    await loadRooms();
 
     loadedSvg.style.width = "100%";
     loadedSvg.style.height = "auto";
@@ -268,8 +269,6 @@ roomNotesInput.addEventListener("input", () => {
 
 document.getElementById("saveButton").onclick = async () => {
 
-    alert("NEW SAVE");
-
     const data = {
 
         version: 1,
@@ -305,9 +304,41 @@ document.getElementById("saveButton").onclick = async () => {
 
 };
 
-document.getElementById("importButton").onclick = () => {
+document.getElementById("exportButton").onclick = () => {
 
-    importFile.click();
+    const data = {
+
+        version: 1,
+        building: building.folder,
+        exported: new Date().toISOString(),
+        rooms: app.rooms.map(room => room.toObject())
+
+    };
+
+    const json = JSON.stringify(data, null, 4);
+
+    const blob = new Blob(
+        [json],
+        { type: "application/json" }
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = `${building.folder}_rooms.json`;
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    link.remove();
+
+    URL.revokeObjectURL(url);
+
+    status.textContent = "Rooms exported.";
+
 };
 
 importFile.addEventListener("change", async () => {
@@ -407,5 +438,50 @@ roomImageInput.addEventListener("change", () => {
 
 });
 
+async function loadRooms() {
+
+    const response = await fetch(
+        `buildings/${building.folder}/rooms.json`
+    );
+
+    if (!response.ok)
+        return;
+
+    const data = await response.json();
+
+    app.roomEditor.clearRooms();
+
+    for (const roomData of data.rooms) {
+
+        const polygon = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "polygon"
+        );
+
+        polygon.setAttribute(
+            "points",
+            roomData.polygon
+                .map(p => `${p[0]},${p[1]}`)
+                .join(" ")
+        );
+
+        polygon.setAttribute("fill", "#C9A227");
+        polygon.setAttribute("fill-opacity", "0.25");
+        polygon.setAttribute("stroke", "#c9a32700");
+        polygon.setAttribute("stroke-width", "0.5");
+
+        const room = new Room(polygon);
+
+        room.id = roomData.id;
+        room.name = roomData.name;
+        room.notes = roomData.notes;
+        room.tags = roomData.tags || [];
+        room.image = roomData.image || "";
+
+        app.roomEditor.createRoom(room);
+
+    }
+
+}
 
 start();
