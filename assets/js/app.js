@@ -397,7 +397,7 @@ roomImageInput.addEventListener("change", async () => {
         app.selectedRoom.images.push(result.filename);
 
     }
-    
+
     refreshRoomImages(app.selectedRoom);
 
 
@@ -406,7 +406,10 @@ roomImageInput.addEventListener("change", async () => {
 async function loadRooms() {
 
     const response = await fetch(
-        `buildings/${building.folder}/rooms.json`
+        `buildings/${building.folder}/rooms.json?ts=${Date.now()}`,
+        {
+            cache: "no-store"
+        }
     );
 
     if (!response.ok)
@@ -447,6 +450,8 @@ async function loadRooms() {
                 ? [roomData.image]
                 : [];
 
+        console.log(room.id, room.images);
+
         app.roomEditor.createRoom(room);
 
     }
@@ -462,46 +467,67 @@ function refreshRoomImages(room) {
     if (!Array.isArray(room.images))
         return;
 
-    room.images.forEach(filename => {
+room.images.forEach(filename => {
 
-        const img = document.createElement("img");
+    const wrapper = document.createElement("div");
 
-        img.src = "images/" + filename;
+    wrapper.className = "roomThumbnailWrapper";
 
-        img.className = "roomThumbnail";
+    const img = document.createElement("img");
 
-        img.title = filename;
+    img.src = "images/" + filename;
 
-        img.onclick = () => {
+    img.className = "roomThumbnail";
 
-            document
-                .getElementById("imageViewerImage")
-                .src = img.src;
+    img.title = filename;
 
-            document
-                .getElementById("imageViewer")
-                .classList
-                .remove("hidden");
+    img.onclick = () => {
 
-        };
+        document
+            .getElementById("imageViewerImage")
+            .src = img.src;
 
-        container.appendChild(img);
+        document
+            .getElementById("imageViewer")
+            .classList
+            .remove("hidden");
 
-    });
+    };
+
+    const deleteButton = document.createElement("button");
+
+    deleteButton.className = "deleteImageButton";
+
+    deleteButton.textContent = "✕";
+
+    deleteButton.onclick = (event) => {
+
+        event.stopPropagation();
+
+        room.images = room.images.filter(image => image !== filename);
+
+        refreshRoomImages(room);
+
+    };
+
+    wrapper.appendChild(img);
+
+    wrapper.appendChild(deleteButton);
+
+    container.appendChild(wrapper);
+
+});
 
 }
 
-document
-    .getElementById("imageViewerBackground")
-    .onclick = () => {
+document.getElementById("imageViewerBackground").onclick = () => {
 
         document
             .getElementById("imageViewer")
             .classList
             .add("hidden");
 
-    };
-
+};
 
 
 start();

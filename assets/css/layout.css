@@ -266,3 +266,47 @@ footer{
     display: none !important;
 
 }
+
+.roomThumbnailWrapper {
+
+    position: relative;
+
+    display: inline-block;
+
+}
+
+.deleteImageButton {
+
+    position: absolute;
+
+    top: 4px;
+
+    right: 4px;
+
+    width: 22px;
+
+    height: 22px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: rgba(0,0,0,.75);
+
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+    line-height: 22px;
+
+    padding: 0;
+
+}
+
+.deleteImageButton:hover {
+
+    background: #c62828;
+
+}
