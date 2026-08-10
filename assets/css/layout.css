@@ -192,9 +192,6 @@ footer{
 
 }
 
-.hidden {
-    display: none;
-}
 
 #roomImages {
 
@@ -221,5 +218,51 @@ footer{
 .roomThumbnail:hover {
 
     transform: scale(1.05);
+
+}
+
+#imageViewer {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    z-index: 1000;
+
+}
+
+#imageViewerBackground {
+
+    position: absolute;
+
+    inset: 0;
+
+    background: rgba(0,0,0,.8);
+
+}
+
+#imageViewerImage {
+
+    position: relative;
+
+    max-width: 90vw;
+
+    max-height: 90vh;
+
+    border-radius: 8px;
+
+    box-shadow: var(--shadow);
+
+}
+
+.hidden {
+
+    display: none !important;
 
 }

@@ -13,7 +13,6 @@ const roomNotesInput = document.getElementById("roomNotes");
 const building = new Building("stbenedicts");
 const search = document.getElementById("search");
 const roomImageInput = document.getElementById("roomImage");
-const roomImagePreview = document.getElementById("roomImagePreview");
 
 async function start() {
 
@@ -288,7 +287,6 @@ document.getElementById("saveButton").onclick = async () => {
 
     };
 
-    console.log(data);
     const json = JSON.stringify(data, null, 4);
 
     const formData = new FormData();
@@ -399,6 +397,8 @@ roomImageInput.addEventListener("change", async () => {
         app.selectedRoom.images.push(result.filename);
 
     }
+    
+    refreshRoomImages(app.selectedRoom);
 
 
 });
@@ -455,8 +455,6 @@ async function loadRooms() {
 
 function refreshRoomImages(room) {
 
-    console.log(room.images);
-
     const container = document.getElementById("roomImages");
 
     container.innerHTML = "";
@@ -472,10 +470,38 @@ function refreshRoomImages(room) {
 
         img.className = "roomThumbnail";
 
+        img.title = filename;
+
+        img.onclick = () => {
+
+            document
+                .getElementById("imageViewerImage")
+                .src = img.src;
+
+            document
+                .getElementById("imageViewer")
+                .classList
+                .remove("hidden");
+
+        };
+
         container.appendChild(img);
 
     });
 
 }
+
+document
+    .getElementById("imageViewerBackground")
+    .onclick = () => {
+
+        document
+            .getElementById("imageViewer")
+            .classList
+            .add("hidden");
+
+    };
+
+
 
 start();

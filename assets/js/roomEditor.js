@@ -444,28 +444,4 @@ updateLabel(room) {
 }
 
 
-
-
-// TODO:
-// Re-implement after viewport refactor.
-/*
-centreRoom(room) {
-
-    const box = room.polygon.getBBox();
-
-    const roomX = box.x + box.width / 2;
-    const roomY = box.y + box.height / 2;
-
-    const viewport = document.getElementById("viewportWrapper");
-
-    const centreX = viewport.clientWidth / 2;
-    const centreY = viewport.clientHeight / 2;
-
-    this.app.panX = (centreX / this.app.zoom) - roomX;
-    this.app.panY = (centreY / this.app.zoom) - roomY;
-
-    updateViewport();
-
-}*/
-
 }
