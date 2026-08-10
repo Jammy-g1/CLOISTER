@@ -315,6 +315,7 @@ selectRoom(room) {
 
     console.log("Selected room:", room);
     this.showVertices(room);
+    refreshRoomImages(room);
 
 }
 

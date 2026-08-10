@@ -1,28 +1,37 @@
 <?php
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
 header("Content-Type: application/json");
 
-if (!isset($_FILES["image"])) {
+if (!isset($_POST["rooms"])) {
 
     http_response_code(400);
-    exit("No image uploaded.");
+
+    echo json_encode([
+        "error" => "No room data received."
+    ]);
+
+    exit;
 
 }
 
-$targetFolder = "images/";
+$json = $_POST["rooms"];
 
-$filename = basename($_FILES["image"]["name"]);
+$file = "buildings/stbenedicts/rooms.json";
 
-move_uploaded_file(
-    $_FILES["image"]["tmp_name"],
-    $targetFolder . $filename
-);
+if (!file_put_contents($file, $json)) {
+
+    http_response_code(500);
+
+    echo json_encode([
+        "error" => "Unable to save rooms."
+    ]);
+
+    exit;
+
+}
 
 echo json_encode([
-    "filename" => $filename
+    "success" => true
 ]);
 
 ?>

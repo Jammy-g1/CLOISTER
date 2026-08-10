@@ -126,25 +126,19 @@
                 <textarea id="roomNotes" rows="8" disabled></textarea>
             </div>
 
-            <div class="property-Group">
+            <div class="property-group">
 
-            <label>Image</label>
+                <label>Images</label>
 
-            <input
-                type="file"
-                id="roomImage"
-                accept="image/*">
+                <input
+                    type="file"
+                    id="roomImage"
+                    accept="image/*"
+                    multiple>
 
-            <img
-                id="roomImagePreview"
-                style="
-                    display:none;
-                    max-width:100%;
-                    margin-top:10px;
-                    border:1px solid #999;
-                ">
+                <div id="roomImages"></div>
 
-        </div>
+            </div>
 
         </div>
 
@@ -179,7 +173,7 @@
     style="display:none;">
 
 <img
-    id="roomImagePreview"
+    id="roomImages"
     style="max-width:100%; margin-top:10px; display:none;">
 
 <script src="assets/js/application.js"></script>

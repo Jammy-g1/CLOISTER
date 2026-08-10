@@ -195,3 +195,31 @@ footer{
 .hidden {
     display: none;
 }
+
+#roomImages {
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+
+}
+
+.roomThumbnail {
+
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+
+    border: 1px solid var(--border);
+    border-radius: 6px;
+
+    cursor: pointer;
+
+}
+
+.roomThumbnail:hover {
+
+    transform: scale(1.05);
+
+}

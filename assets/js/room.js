@@ -6,7 +6,7 @@ class Room {
         this.name = "";
         this.notes = "";
         this.tags = [];
-        this.image = "";
+        this.images = [];
         this.polygon = polygon;
         this.label = null;
 
@@ -37,7 +37,7 @@ class Room {
 
             tags: this.tags,
 
-            image: this.image,
+            images: this.images,
 
             polygon: points
 

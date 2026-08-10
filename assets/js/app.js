@@ -288,6 +288,7 @@ document.getElementById("saveButton").onclick = async () => {
 
     };
 
+    console.log(data);
     const json = JSON.stringify(data, null, 4);
 
     const formData = new FormData();
@@ -382,22 +383,23 @@ roomImageInput.addEventListener("change", async () => {
     if (roomImageInput.files.length === 0)
         return;
 
-    const file = roomImageInput.files[0];
+    for (const file of roomImageInput.files) {
 
-    const formData = new FormData();
-    formData.append("image", file);
+        const formData = new FormData();
 
-    const response = await fetch("uploadImage.php", {
-        method: "POST",
-        body: formData
-    });
+        formData.append("image", file);
 
-    const result = await response.json();
+        const response = await fetch("uploadImage.php", {
+            method: "POST",
+            body: formData
+        });
 
-    app.selectedRoom.image = result.filename;
+        const result = await response.json();
 
-    roomImagePreview.src = "images/" + result.filename;
-    roomImagePreview.style.display = "block";
+        app.selectedRoom.images.push(result.filename);
+
+    }
+
 
 });
 
@@ -439,11 +441,40 @@ async function loadRooms() {
         room.name = roomData.name;
         room.notes = roomData.notes;
         room.tags = roomData.tags || [];
-        room.image = roomData.image || "";
+        room.images = Array.isArray(roomData.images)
+            ? roomData.images
+            : roomData.image
+                ? [roomData.image]
+                : [];
 
         app.roomEditor.createRoom(room);
 
     }
+
+}
+
+function refreshRoomImages(room) {
+
+    console.log(room.images);
+
+    const container = document.getElementById("roomImages");
+
+    container.innerHTML = "";
+
+    if (!Array.isArray(room.images))
+        return;
+
+    room.images.forEach(filename => {
+
+        const img = document.createElement("img");
+
+        img.src = "images/" + filename;
+
+        img.className = "roomThumbnail";
+
+        container.appendChild(img);
+
+    });
 
 }
 
