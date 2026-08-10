@@ -56,17 +56,28 @@ header{
 
 }
 
-main{
+main {
 
-    display:grid;
+    display: grid;
 
     grid-template-columns:
-
         260px
-
         1fr
-
         320px;
+
+}
+
+main.noExplorer {
+
+    grid-template-columns:
+        1fr
+        320px;
+
+}
+
+main.noExplorer #explorer {
+
+    display: none;
 
 }
 
@@ -179,4 +190,8 @@ footer{
 
     cursor:default;
 
+}
+
+.hidden {
+    display: none;
 }

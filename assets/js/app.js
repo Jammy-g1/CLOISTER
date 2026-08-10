@@ -29,6 +29,8 @@ async function start() {
 
     status.textContent = "Ready";
 
+    document.querySelector("main").classList.add("noExplorer");
+
 }
 
 function createExplorer() {
@@ -36,7 +38,7 @@ function createExplorer() {
     buildingTree.innerHTML = "";
 
     const title = document.createElement("h4");
-    title.textContent = "🏫 " + building.data.name;
+    title.textContent = building.data.name;
 
     buildingTree.appendChild(title);
 
@@ -46,7 +48,7 @@ function createExplorer() {
 
         div.className = "floorItem";
 
-        div.textContent = "📁 " + floor.name;
+        div.textContent = floor.name;
 
         div.onclick = () => {
 
@@ -233,6 +235,15 @@ document.getElementById("pointerTool").onclick = () => {
     app.currentTool = "pointer";
 
     status.textContent = "Pointer Tool";
+
+};
+
+document.getElementById("toggleExplorer").onclick = () => {
+
+    document
+        .querySelector("main")
+        .classList
+        .toggle("noExplorer");
 
 };
 
