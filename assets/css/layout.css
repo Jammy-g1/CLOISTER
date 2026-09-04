@@ -192,13 +192,11 @@ footer{
 
 }
 
-
 #roomImages {
 
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-top: 10px;
 
 }
 
@@ -308,5 +306,23 @@ footer{
 .deleteImageButton:hover {
 
     background: #c62828;
+
+}
+
+#roomImagesContainer {
+
+    margin-top: 10px;
+
+    max-height: 220px;
+
+    overflow-y: auto;
+
+    overflow-x: hidden;
+
+    border: 1px solid var(--border);
+
+    border-radius: 6px;
+
+    padding: 8px;
 
 }
