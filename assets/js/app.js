@@ -13,6 +13,7 @@ const roomNotesInput = document.getElementById("roomNotes");
 const building = new Building("stbenedicts");
 const search = document.getElementById("search");
 const roomImageInput = document.getElementById("roomImage");
+const roomTagInput = document.getElementById("roomTagInput");
 
 async function start() {
 
@@ -529,5 +530,71 @@ document.getElementById("imageViewerBackground").onclick = () => {
 
 };
 
+roomTagInput.addEventListener("keydown", event => {
+
+    if (event.key !== "Enter")
+        return;
+
+    event.preventDefault();
+
+    if (!app.selectedRoom)
+        return;
+
+    const tag = roomTagInput.value.trim();
+
+    if (!tag)
+        return;
+
+    if (!app.selectedRoom.tags.includes(tag)) {
+
+        app.selectedRoom.tags.push(tag);
+
+    }
+
+    roomTagInput.value = "";
+
+    refreshRoomTags(app.selectedRoom);
+
+});
+
+function refreshRoomTags(room) {
+
+    const container = document.getElementById("roomTags");
+
+    container.innerHTML = "";
+
+    room.tags.forEach(tag => {
+
+        const tagElement = document.createElement("span");
+
+        tagElement.className = "roomTag";
+
+        const text = document.createElement("span");
+
+        text.textContent = tag;
+
+        const removeButton = document.createElement("button");
+
+        removeButton.textContent = "×";
+
+        removeButton.className = "removeTagButton";
+
+        removeButton.onclick = () => {
+
+            room.tags = room.tags.filter(t => t !== tag);
+
+            refreshRoomTags(room);
+
+        };
+
+        tagElement.appendChild(text);
+
+        tagElement.appendChild(removeButton);
+
+        container.appendChild(tagElement);
+
+    });
+
+}
 
 start();

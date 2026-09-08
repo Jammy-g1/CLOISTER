@@ -295,8 +295,7 @@ selectRoom(room) {
 
     document.getElementById("roomNotes").value = room.notes;
 
-    document.getElementById("roomTags").textContent =
-        room.tags.length ? room.tags.join(", ") : "None";
+    refreshRoomTags(room);
 
 //    document.getElementById("roomImages").textContent =
 //        room.images.length + " image(s)";
