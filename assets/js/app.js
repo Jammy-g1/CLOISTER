@@ -14,6 +14,8 @@ const building = new Building("stbenedicts");
 const search = document.getElementById("search");
 const roomImageInput = document.getElementById("roomImage");
 const roomTagInput = document.getElementById("roomTagInput");
+const searchResults = document.getElementById("searchResults");
+
 
 async function start() {
 
@@ -363,15 +365,73 @@ search.addEventListener("input", () => {
 
     const value = search.value.trim().toLowerCase();
 
-    const room = app.rooms.find(r =>
-        r.id.toLowerCase() === value
-    );
+    searchResults.innerHTML = "";
 
-    if (!room)
+    if (!value)
         return;
 
-    app.roomEditor.selectRoom(room);
+    const matches = app.rooms.filter(room => {
 
+        const idMatch =
+            room.id.toLowerCase().includes(value);
+
+        const nameMatch =
+            room.name.toLowerCase().includes(value);
+
+        const tagMatch =
+            room.tags.some(tag =>
+                tag.toLowerCase().includes(value)
+            );
+
+        return idMatch || nameMatch || tagMatch;
+    });
+
+    if (matches.length === 0) {
+        const noResults = document.createElement("div");
+        noResults.className = "searchNoResults";
+        noResults.textContent = "No rooms found.";
+        searchResults.appendChild(noResults);
+        return;
+    }
+
+    matches.forEach(room => {
+
+        const result = document.createElement("div");
+        result.className = "searchResult";
+
+        const title = document.createElement("div");
+        title.className = "searchResultTitle";
+        title.textContent = room.id;
+
+        const name = document.createElement("div");
+        name.className = "searchResultName";
+        name.textContent = room.name;
+
+        result.appendChild(title);
+        result.appendChild(name);
+
+        if (room.tags.length > 0) {
+
+            const tags = document.createElement("div");
+            tags.className = "searchResultTags";
+
+            room.tags.forEach(tag => {
+                const tagElement = document.createElement("span");
+                tagElement.textContent = tag;
+                tags.appendChild(tagElement);
+            });
+
+            result.appendChild(tags);
+        }
+
+        result.onclick = () => {
+            app.roomEditor.selectRoom(room);
+            search.value = room.id;
+            searchResults.innerHTML = "";
+        };
+
+        searchResults.appendChild(result);
+    });
 });
 
 roomImageInput.addEventListener("change", async () => {
